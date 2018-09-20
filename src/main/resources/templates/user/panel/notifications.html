@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agile Actors IWG - Admin</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css"/>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#notifications tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    // DataTable
+    var table = $('#notifications').DataTable();
+
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+} );
+    </script>
+</head>
+<body>
+
+<nav role="navigation" class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="/user" class="navbar-brand">IWG Agile Actors</a>
+    </div>
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="/user/games">Games</a></li>
+            <li><a href="/user/favourites">Favourites</a></li>
+            <li><a href="/user/panel">Profile</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/user/panel"><span class="glyphicon glyphicon-user"></span> <span th:utext="${user.username}"></span> </a></li>
+            <li><a href="/user/panel/wallet"><span class="glyphicon glyphicon-eur"></span> <span th:utext="${wallet.balance}"></span> </a></li>
+            <li><a href="/user/panel/notifications"><span class="glyphicon glyphicon-envelope"></span> <span th:utext="${unreadNotifications}"></span> </a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h3 style="color: cornsilk" class="form-signin-heading">Your incoming notifications</h3>
+    <table id="notifications" class="table white-bg">
+        <thead>
+        <tr>
+            <th class="text-left">Date</th>
+            <th class="text-left">Notification message</th>
+            <th class="text-left">Read</th>
+            <th class="text-left">Change status</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th class="text-left">Date</th>
+            <th class="text-left">Notification message</th>
+            <th class="text-left">Read</th>
+            <th class="text-left">Change status</th>
+        </tr>
+        </tfoot>
+        <tr th:each="notification : ${notifications}">
+            <td class="text-left" th:text="${#dates.format(notification.dateCreated, 'dd/MM/yyyy HH:mm:ss')}"></td>
+            <td class="text-left" th:text="${notification.message}"></td>
+            <td class="text-left" th:text="${notification.read}"></td>
+            <div th:switch="${notification.read}">
+                <td th:case="true" class="text-left"><a th:href="@{/user/panel/notifications/unread(id=${notification.id})}" class="btn btn-success" role="button">Mark as unread</a></td>
+                <td th:case="false" class="text-left"><a th:href="@{/user/panel/notifications/read(id=${notification.id})}" class="btn btn-success" role="button">Mark as read</a></td>
+            </div>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

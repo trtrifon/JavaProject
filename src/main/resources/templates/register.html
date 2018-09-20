@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Agile Actors IWG - Register</title>
+        <link rel="stylesheet" type="text/css" th:href="@{css/main.css}" media="screen" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+
+    <nav role="navigation" class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">IWG Agile Actors</a>
+        </div>
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/games">Games</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/login" class="active"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="/register" class="active"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+            </ul>
+        </div>
+    </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 mtop40 quicksand">
+                    <form autocomplete="off" th:action="@{/register}"
+                          th:object="${user}" method="post" class="form-horizontal"
+                          role="form">
+                        <h2 style="color: cornsilk">Registration Form</h2>
+
+                        <div class="form-group mtop40">
+                            <div class="col-sm-10 col-md-10 col-md-offset-1">
+                                <input type="text" th:field="*{username}"
+                                       placeholder="Username" class="form-control" /> <label
+                                    th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-10 col-md-10 col-md-offset-1">
+                                <input type="password" th:field="*{password}"
+                                       placeholder="Password" class="form-control" /> <label
+                                    th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-10 col-md-10 col-md-offset-1">
+                                <input type="text" th:field="*{email}" placeholder="Email"
+                                       class="form-control" /> <label
+                                    th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-md-offset-1">
+                                <input type="text" th:field="*{firstName}" placeholder="First Name"
+                                       class="form-control" />
+                                <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                                       class="validation-message"></label>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <input type="text" th:field="*{lastName}"
+                                       placeholder="Last Name" class="form-control" />
+                                <label	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                                          class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group mtop40">
+                            <div class="col-sm-10 col-md-10 col-md-offset-1">
+                                <input type="text" th:field="*{address}" placeholder="Address"
+                                       class="form-control" /> <label
+                                    th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-md-offset-1">
+                                <input type="date" th:field="*{dateOfBirth}" placeholder="I was born..."
+                                       class="form-control" /> <label
+                                    th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"
+                                    class="validation-message"></label>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <input type="text" th:field="*{phoneNumber}" placeholder="Phone"
+                                       class="form-control" /> <label
+                                    th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+                        <div class="form-group mtop40">
+                            <div class="col-sm-10 col-md-10 col-md-offset-1">
+                                <button type="submit" class="btn btn-success btn-block">Register User</button>
+                            </div>
+                        </div>
+                        <span class="failure-message" th:utext="${successMessage}"></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

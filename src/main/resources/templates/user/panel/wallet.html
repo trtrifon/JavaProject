@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agile Actors IWG - Admin</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" th:href="@{/css/main.css}" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css"/>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#history tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+
+    // DataTable
+    var table = $('#history').DataTable();
+
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+} );
+    </script>
+</head>
+<body>
+
+<nav role="navigation" class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="/user" class="navbar-brand">IWG Agile Actors</a>
+    </div>
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="/user/games">Games</a></li>
+            <li><a href="/user/favourites">Favourites</a></li>
+            <li><a href="/user/panel">Profile</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/user/panel"><span class="glyphicon glyphicon-user"></span> <span th:utext="${user.username}"></span> </a></li>
+            <li><a href="/user/panel/wallet"><span class="glyphicon glyphicon-eur"></span> <span th:utext="${wallet.balance}"></span> </a></li>
+            <li><a href="/user/panel/notifications"><span class="glyphicon glyphicon-envelope"></span> <span th:utext="${unreadNotifications}"></span> </a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="form-group mtop40">
+            <div class="col-sm-10 col-md-10 col-md-offset-1">
+                <span class="success-message" th:utext="${successMessage}"></span>
+            </div>
+        </div>
+        <div class="col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
+            <div class="thumbnail bootsnipp-thumb">
+                <div style="width: auto;">
+                    <img style="height: 100px; margin: 0 auto" class="img-responsive" src="../../../images/wallet.png">
+                </div>
+                <div class="panel-body text-center">
+                    <p><strong>Your current balance is: <span th:text="${wallet.balance}"></span>&euro;</strong></p>
+                </div>
+                <div class="caption">
+                    <a href="/user/panel/wallet/add" class="btn btn-success" role="button">Add a coupon to increase balance</a>
+                </div>
+                <div class="caption">
+                    <a href="/user/panel/wallet/withdraw" class="btn btn-warning" role="button">Withdraw balance to your bank account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

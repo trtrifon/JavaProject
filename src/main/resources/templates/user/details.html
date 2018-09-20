@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agile Actors IWG - Profile</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/main.css" th:href="@{../css/main.css}" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav role="navigation" class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="#" class="navbar-brand">IWG Agile Actors</a>
+    </div>
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="/user/games">Games</a></li>
+            <li><a href="/user/panel">Profile</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <span th:utext="${user.username}"></span> </a></li>
+            <li><a href="/user/panel/wallet"><span class="glyphicon glyphicon-eur"></span> <span th:utext="${wallet.balance}"></span> </a></li>
+            <li><a href="/user/panel/notifications"><span class="glyphicon glyphicon-envelope"></span> <span th:utext="${unreadNotifications}"></span> </a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h2 class="t-left white">Welcome <span th:utext="${user.firstName}"></span> <span th:utext="${user.lastName}"></span>!</h2>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 mtop40 quicksand">
+                <form autocomplete="off" th:action="@{/user/details}"
+                      th:object="${user}" method="post" class="form-horizontal"
+                      role="form">
+                    <h2 style="color: cornsilk">Edit Details</h2>
+
+                    <div class="form-group mtop40">
+                        <div class="col-sm-10 col-md-10 col-md-offset-1">
+                            <input type="text" th:field="*{username}"
+                                   th:placeholder="${user.username}" class="form-control" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-10 col-md-offset-1">
+                            <input type="text" th:field="*{email}" th:placeholder="${user.email}"
+                                   class="form-control" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-md-4 col-md-offset-1">
+                            <input type="text" th:field="*{firstName}" th:placeholder="${user.firstName}"
+                                   class="form-control" required/>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <input type="text" th:field="*{lastName}"
+                                   th:placeholder="${user.lastName}" class="form-control" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group mtop40">
+                        <div class="col-sm-10 col-md-10 col-md-offset-1">
+                            <input type="text" th:field="*{address}" th:placeholder="${user.address}"
+                                   class="form-control" required/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10 col-md-10 col-md-offset-1">
+                            <input type="text" th:field="*{phoneNumber}" th:placeholder="${user.phoneNumber}"
+                                   class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="form-group mtop40">
+                        <div class="col-sm-10 col-md-10 col-md-offset-1">
+                            <button type="submit" class="btn btn-success btn-block">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

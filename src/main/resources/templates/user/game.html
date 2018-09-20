@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:style="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Agile Actors IWG - Game</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" media="screen"/>
+    <link th:href="@{/css/bootstrap-rating.css}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{../js/game.js}"></script>
+    <script type="text/javascript" th:src="@{../js/bootstrap-rating.min.js}"></script>
+</head>
+
+<body>
+    <nav role="navigation" class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/user" class="navbar-brand">IWG Agile Actors</a>
+        </div>
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/user/games">Games</a></li>
+                <li><a href="/user/favourites">Favourites</a></li>
+                <li><a href="/user/panel">Profile</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/user/panel"><span class="glyphicon glyphicon-user"></span> <span th:utext="${user.username}"></span> </a></li>
+                <li><a href="/user/panel/wallet"><span class="glyphicon glyphicon-eur"></span> <span id="balance" th:utext="${wallet.balance}"></span> </a></li>
+                <li><a href="/user/panel/notifications"><span class="glyphicon glyphicon-envelope"></span> <span th:utext="${unreadNotifications}"></span> </a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="intro-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1 th:text="${game.name}" style="color: white;">
+                        </h1>
+                        <button class="icon-button" id="favouriteButton" th:if="${isFavourite}" th:onclick="'javascript:getGameId(\'' + ${game.id} + '\' );'" ><span style="font-size: 2em" id="favourite" class="glyphicon glyphicon-heart" ></span></button>
+                        <button class="icon-button" id="unFavouriteButton" th:unless="${isFavourite}" th:onclick="'javascript:getGameId(\'' + ${game.id} + '\' );'" > <span style="font-size: 2em" id="notFavourite" class="glyphicon glyphicon-heart-empty"></span></button>
+                        <input th:if="${isRated}" style="margin-left: 5px;" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" th:value="${game.rating}" data-readonly><span style="color: white;" th:if="${isRated}"><span style="margin-left: 2px" >(</span><span th:text="${game.usersRated}"> </span><span style="margin-left: 1px" class="glyphicon glyphicon-user">)</span></span>
+                        <input th:unless="${isRated}"  style="margin-left: 5px;" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" th:value="${game.rating}"><span style="color: white;" th:unless="${isRated}"><span style="margin-left: 2px" >(</span><span th:text="${game.usersRated}"> </span><span style="margin-left: 1px" class="glyphicon glyphicon-user">)</span></span>
+                        <hr class="small">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <div class="main-content" id="ocMaincontent" role="main">
+            <div>
+                <img style="margin: 0 auto; text-align: center;" class="img-responsive" th:src="${game.image}" th:title="${game.name}" th:alt="${game.name}">
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <h3 style="color:white">
+                    <span>Odds of result: </span><span th:text="${game.odds}"></span><span> %</span>
+                </h3>
+                <h3 style="color:white">
+                    <span>Game price: </span><span th:text="${game.price}"></span><span> &euro;</span>
+                </h3>
+                <h3 style="color:white">
+                    <span>Prize: </span><span th:text="${game.prize}"></span><span> &euro;</span>
+                </h3>
+            </div>
+        </div>
+
+        <div id="gamePlay" style="display:none; text-align:center; height: 200px; color: white; border-top:1px solid #2f2b2a;">
+            <div id="loader"></div>
+
+            <div style="display:none; align-content: center" id="gameMessage" class="animate-bottom">
+                <h2 id="gameResult"></h2>
+            </div>
+        </div>
+
+        <div style="padding: 10px; text-align:center;">
+            <button id="tryButton" type="button" class="btn btn-info" th:onclick="'javascript:getGameId(\'' + ${game.id} + '\' );'">Try Game</button>
+            <button id="playButton" type="button" class="btn btn-success" th:onclick="'javascript:getInfo(\'' + ${game.id} + '\', \'' + ${game.price} + '\');'">Play Game</button>
+        </div>
+        <div id="snackbar"></div>
+        <div id="snackbar2"></div>
+    </section>
+
+<div class="container" th:if="${!recent.empty}" style="margin-bottom:20px; margin-top:20px;max-width:1200px;">
+    <hr class="small">
+    <h3 style="color: cornsilk" class="form-signin-heading">Your most recently played games</h3>
+    <hr class="small">
+
+    <div class="row">
+        <div class="col-sm-12 col-xs-12 col-md-3 col-lg-3" th:each="gamePlay : ${recent}">
+            <div class="thumbnail bootsnipp-thumb">
+                <div style="width: auto;">
+                    <img style="height: 100px; margin: 0 auto" class="img-responsive" th:src="${gamePlay.game.image}" th:title="${gamePlay.game.name}" th:alt="${gamePlay.game.name}">
+                </div>
+                <ul class="list-group text-center">
+                    <li class="list-group-item"><i class="fa fa-check"></i><span>Odds of result: </span><span th:text="${gamePlay.game.odds}"></span><span> %</span></li>
+                    <li class="list-group-item"><i class="fa fa-check"></i><span>Game price: </span><span th:text="${gamePlay.game.price}"></span><span> &euro;</span></li>
+                    <li class="list-group-item"><i class="fa fa-check"></i> <span>Prize: </span><span th:text="${gamePlay.game.prize}"></span><span> &euro;</span></li>
+                    <li class="list-group-item"><i class="fa fa-check"></i> <span>Outcome: </span>
+                        <span th:if="${gamePlay.outcome}">You won</span>
+                        <span th:if="${!gamePlay.outcome}">You lost</span>
+                    </li>
+                </ul>
+                <div class="caption">
+                    <a th:href="@{'/user/game'(id=${gamePlay.game.id})}">
+                        <button type="button" class="btn btn-warning">Learn more</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

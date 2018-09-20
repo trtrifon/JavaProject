@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Agile Actors IWG - Admin</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/main.css" th:href="@{../css/main.css}" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav role="navigation" class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="/home" class="navbar-brand">IWG Agile Actors</a>
+    </div>
+    <div id="navbarCollapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/admin/games">Edit Games</a></li>
+            <li><a href="/admin/notifications">Send Notifications</a></li>
+            <li><a href="/admin/history">User history</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/home"><span class="glyphicon glyphicon-user"></span>  <span th:utext="${user.username}"/></a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="card">
+            <img style="height:200px" class="card-img-top" src="images/iwg.png">
+            <div class="card-block">
+                <a href="/admin/games">
+                    <button type="button" class="btn btn-success">Edit the Instant Win Games</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="card">
+            <img style="height:200px" class="card-img-top" src="images/notify.png">
+            <div class="card-block">
+                <a href="/admin/notifications">
+                    <button type="button" class="btn btn-success">Send notifications to users</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4">
+        <div class="card">
+            <img style="height:200px" class="card-img-top" src="images/history.png">
+            <div class="card-block">
+                <a href="/admin/history">
+                    <button type="button" class="btn btn-success">View user history</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
